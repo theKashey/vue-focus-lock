@@ -17,7 +17,7 @@ Just wrap something with focus lock, and focus will be `moved inside` on mount.
  <button onClick={onClick} />
 </FocusLock> 
 ```
- Demo - https://codesandbox.io/s/72prk69z3j
+ Demo - https://codesandbox.io/s/l5qlpxqvnq
 
 # Behavior
  0. It will always keep focus inside Lock.
