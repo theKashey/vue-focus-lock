@@ -49,8 +49,7 @@
     },
     data(){
       return {
-        data: {},
-        isFocused: 0
+        data: {}
       }
     },
     watch: {
@@ -77,6 +76,7 @@
 
     destroyed(){
       instances = instances.filter(({ vue }) => vue != this);
+      emitChange();
     }
   }
 

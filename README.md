@@ -19,6 +19,16 @@ Just wrap something with focus lock, and focus will be `moved inside` on mount.
 ```
  Demo - https://codesandbox.io/s/l5qlpxqvnq
 
+#WHY?
+From [MDN Article about accessible dialogs](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_dialog_role):
+ - The dialog must be properly labeled
+ - Keyboard __focus must be managed__ correctly
+ 
+This one is about managing the focus.
+
+I'v got a good [article about focus management, dialogs and  WAI-ARIA](https://medium.com/@antonkorzunov/its-a-focus-trap-699a04d66fb5).    
+
+
 # Behavior
  0. It will always keep focus inside Lock.
  1. It will cycle forward then you press Tab.
@@ -26,6 +36,8 @@ Just wrap something with focus lock, and focus will be `moved inside` on mount.
  3. It will do it using _browser_ tools, not emulation.
  4. It will handle positive tabIndex inside form.
  5. It will prevent any jump outside, returning focus to the last element.
+ 
+ !! this realisation will not return focus  to the original place on Unlock !! 
 
 You can use nested Locks or have more than one Lock on the page.
 Only `last`, or `deepest` one will work. No fighting.
