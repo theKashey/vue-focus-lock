@@ -5,24 +5,26 @@
 </template>
 
 <script>
-  import moveFocusInside, { focusInside } from 'focus-lock';
+  import moveFocusInside, {focusInside} from 'focus-lock';
 
   let lastActiveTrap = 0;
   let lastActiveFocus = null;
   const activateTrap = () => {
+    let result = false;
     if (lastActiveTrap) {
-      const { observed, onActivation } = lastActiveTrap;
+      const {observed, onActivation} = lastActiveTrap;
       if (observed && !focusInside(observed)) {
-        onActivation && onActivation();
-        moveFocusInside(observed, lastActiveFocus);
+        onActivation();
+        result = moveFocusInside(observed, lastActiveFocus);
       }
       lastActiveFocus = document.activeElement;
     }
+    return result;
   };
 
   const reducePropsToState = (propsList) => {
     return propsList
-      .filter(({ disabled }) => !disabled)
+      .filter(({disabled}) => !disabled)
       .slice(-1)[0];
   };
 
@@ -40,9 +42,34 @@
     handleStateChangeOnClient(reducePropsToState(instances));
   };
 
+  const onTrap = (event) => {
+    if (activateTrap() && event) {
+      // prevent scroll jump
+      event.preventDefault();
+    }
+  };
+
+  const onBlur = () => {
+    setImmediate(activateTrap);
+  };
+
+  const attachHandler = () => {
+    document.addEventListener('focusin', onTrap, true);
+    document.addEventListener('focusout', onBlur);
+  };
+
+  const detachHandler = () => {
+    document.removeEventListener('focusin', onTrap, true);
+    document.removeEventListener('focusout', onBlur);
+  };
+
+
   export default {
     name: 'Lock',
     props: {
+      returnFocus: {
+        type: Boolean
+      },
       disabled: {
         type: Boolean
       }
@@ -69,13 +96,29 @@
       this.data.vue = this;
       this.data.observed = this.$el;
       this.data.disabled = this.disabled;
+      this.data.onActivation = () => {
+        this.originalFocusedElement = this.originalFocusedElement || document.activeElement;
+      };
 
+      if (!instances.length) {
+        attachHandler();
+      }
       instances.push(this.data);
       emitChange();
     },
 
     destroyed(){
-      instances = instances.filter(({ vue }) => vue != this);
+      instances = instances.filter(({vue}) => vue != this);
+      if (!instances.length) {
+        detachHandler();
+      }
+      if (
+        this.returnFocus &&
+        this.originalFocusedElement &&
+        this.originalFocusedElement.focus
+      ) {
+        this.originalFocusedElement.focus();
+      }
       emitChange();
     }
   }
