@@ -7,6 +7,13 @@
 <script>
   import moveFocusInside, {focusInside} from 'focus-lock';
 
+  function deferAction(action) {
+    setImmediate
+      ? setImmediate(action)
+      : setTimeout(action, 1)
+  }
+
+
   let lastActiveTrap = 0;
   let lastActiveFocus = null;
   const activateTrap = () => {
@@ -32,7 +39,7 @@
     lastActiveTrap = trap;
     if (trap) {
       activateTrap();
-      setImmediate(activateTrap);
+      deferAction(activateTrap);
     }
   };
 
@@ -51,7 +58,7 @@
   };
 
   const onBlur = () => {
-    setImmediate(activateTrap);
+    deferAction(activateTrap);
   };
 
   const attachHandler = () => {
@@ -89,7 +96,7 @@
 
     methods: {
       onBlur() {
-        setImmediate(emitChange);
+        deferAction(emitChange);
       },
     },
 
