@@ -50,6 +50,6 @@
     "vue": "^2.0.0"
   },
   "dependencies": {
-    "focus-lock": "^0.0.4"
+    "focus-lock": "^0.2.4"
   }
 }
