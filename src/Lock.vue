@@ -1,6 +1,13 @@
 <template>
-    <div @focusout="onBlur">
-        <slot>It is a Trap</slot>
+    <div>
+        <div :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
+        <div :tabIndex="disabled ? -1 : 1" :style="hidden"></div>
+
+        <div @focusout="onBlur" data-lock>
+            <slot>It is a Trap</slot>
+        </div>
+
+        <div :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
     </div>
 </template>
 
@@ -12,7 +19,6 @@
       ? setImmediate(action)
       : setTimeout(action, 1)
   }
-
 
   let lastActiveTrap = 0;
   let lastActiveFocus = null;
@@ -80,15 +86,24 @@
       },
       disabled: {
         type: Boolean
+      },
+      noFocusGuards: {
+        type: Boolean
       }
     },
-    data(){
+    data() {
       return {
-        data: {}
+        data: {},
+        hidden: ""//    "width: 1px;height: 0px;padding: 0;overflow: hidden;position: fixed;top: 0;left: 0;"
+      }
+    },
+    computed: {
+      guardsEnabled() {
+        return !(this.disabled || this.noFocusGuards);
       }
     },
     watch: {
-      disabled(){
+      disabled() {
         this.data.disabled = this.disabled;
         emitChange();
       }
@@ -100,9 +115,10 @@
       },
     },
 
-    mounted(){
+    mounted() {
       this.data.vue = this;
-      this.data.observed = this.$el;
+      this.data.observed = this.$el.querySelector("[data-lock]");
+
       this.data.disabled = this.disabled;
       this.data.onActivation = () => {
         this.originalFocusedElement = this.originalFocusedElement || document.activeElement;
@@ -115,8 +131,8 @@
       emitChange();
     },
 
-    destroyed(){
-      instances = instances.filter(({vue}) => vue != this);
+    destroyed() {
+      instances = instances.filter(({vue}) => vue !== this);
       if (!instances.length) {
         detachHandler();
       }

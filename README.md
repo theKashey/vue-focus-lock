@@ -19,7 +19,7 @@ Just wrap something with focus lock, and focus will be `moved inside` on mount.
 ```
  Demo - https://codesandbox.io/s/l5qlpxqvnq
 
-#WHY?
+# WHY?
 From [MDN Article about accessible dialogs](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_dialog_role):
  - The dialog must be properly labeled
  - Keyboard __focus must be managed__ correctly
