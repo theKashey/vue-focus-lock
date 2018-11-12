@@ -12,25 +12,37 @@
 </template>
 
 <script>
-  import moveFocusInside, {focusInside} from 'focus-lock';
+  import moveFocusInside, {focusInside, focusIsHidden} from 'focus-lock';
 
   function deferAction(action) {
-    setImmediate
-      ? setImmediate(action)
-      : setTimeout(action, 1)
+    const setImmediate = window.setImmediate;
+    if (typeof setImmediate !== 'undefined') {
+      setImmediate(action)
+    } else {
+      setTimeout(action, 1)
+    }
   }
 
   let lastActiveTrap = 0;
   let lastActiveFocus = null;
+
+  const focusOnBody = () => (
+    document && document.activeElement === document.body
+  );
+
+  const isFreeFocus = () => focusOnBody() || focusIsHidden();
+
   const activateTrap = () => {
     let result = false;
     if (lastActiveTrap) {
       const {observed, onActivation} = lastActiveTrap;
-      if (observed && !focusInside(observed)) {
-        onActivation();
-        result = moveFocusInside(observed, lastActiveFocus);
+      if (!isFreeFocus() || !lastActiveFocus) {
+        if (observed && !focusInside(observed)) {
+          onActivation();
+          result = moveFocusInside(observed, lastActiveFocus);
+        }
+        lastActiveFocus = document.activeElement;
       }
-      lastActiveFocus = document.activeElement;
     }
     return result;
   };
@@ -42,6 +54,9 @@
   };
 
   const handleStateChangeOnClient = (trap) => {
+    if (lastActiveTrap !== trap) {
+      lastActiveTrap = null;
+    }
     lastActiveTrap = trap;
     if (trap) {
       activateTrap();
