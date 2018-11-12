@@ -13,6 +13,11 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue']
   },
+  node: {
+    setImmediate: false,
+    setTimeout: false,
+    process: false,
+  },
   module: {
     loaders: [
       {
