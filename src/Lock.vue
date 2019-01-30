@@ -4,7 +4,7 @@
         <div :tabIndex="disabled ? -1 : 1" :style="hidden"></div>
 
         <div @focusout="onBlur" data-lock>
-            <slot>It is a Trap</slot>
+            <slot></slot>
         </div>
 
         <div :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
