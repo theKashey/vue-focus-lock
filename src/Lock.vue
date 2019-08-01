@@ -41,7 +41,7 @@
           onActivation();
           result = moveFocusInside(observed, lastActiveFocus);
         }
-        lastActiveFocus = document.activeElement;
+        lastActiveFocus = document && document.activeElement;
       }
     }
     return result;
