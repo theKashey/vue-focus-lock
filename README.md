@@ -43,8 +43,9 @@ You can use nested Locks or have more than one Lock on the page.
 Only `last`, or `deepest` one will work. No fighting.
 
 # API
- FocusLock has only 3 props, 2 of them you will never use(I hope):
+ FocusLock has few props to tune behavior, all props are optional:
   - `disabled`, to disable(enable) behavior without altering the tree.
+  - `group=''`, named focus group for focus scattering aka [combined lock targets](https://github.com/theKashey/vue-focus-lock/issues/2).
      
 # How it works
  Everything thing is simple - vue-focus-lock just dont left focus left boundaries of component, and

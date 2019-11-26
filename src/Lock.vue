@@ -3,7 +3,7 @@
         <div :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
         <div :tabIndex="disabled ? -1 : 1" :style="hidden"></div>
 
-        <div @focusout="onBlur" data-lock>
+        <div @focusout="onBlur" v-bind="groupAttr" data-lock>
             <slot></slot>
         </div>
 
@@ -13,6 +13,7 @@
 
 <script>
   import moveFocusInside, {focusInside, focusIsHidden} from 'focus-lock';
+  import {constants} from 'focus-lock';
 
   function deferAction(action) {
     const setImmediate = window.setImmediate;
@@ -104,6 +105,9 @@
       },
       noFocusGuards: {
         type: Boolean
+      },
+      group: {
+        type: String
       }
     },
     data() {
@@ -115,6 +119,9 @@
     computed: {
       guardsEnabled() {
         return !(this.disabled || this.noFocusGuards);
+      },
+      groupAttr() {
+        return {[constants.FOCUS_GROUP]: this.group};
       }
     },
     watch: {
