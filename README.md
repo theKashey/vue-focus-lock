@@ -14,7 +14,7 @@ Just wrap something with focus lock, and focus will be `moved inside` on mount.
 ```html
 <FocusLock>
  You can not leave this form
- <button onClick={onClick} />
+ <button @click="onClick" />
 </FocusLock> 
 ```
  Demo - https://codesandbox.io/s/l5qlpxqvnq
@@ -43,9 +43,21 @@ You can use nested Locks or have more than one Lock on the page.
 Only `last`, or `deepest` one will work. No fighting.
 
 # API
- FocusLock has only 3 props, 2 of them you will never use(I hope):
+ FocusLock has few props to tune behavior, all props are optional:
   - `disabled`, to disable(enable) behavior without altering the tree.
-     
+  - `group=''`, named focus group for focus scattering aka [combined lock targets](https://github.com/theKashey/vue-focus-lock/issues/2).
+  - `noFocusGuards=false`, disable focus guards - virtual inputs which secure tab index.
+
+#### Removing Tailing Guard
+  FocusLock is adding `Focus Guards` before and after lock to remove some side effects, like page scrolling. 
+  If you want to allow user _tab_ into address bar (only if your modal is the last tabbable element on the body), 
+  you might remove the Tailing Guard. To do this, set `noFocusGuards` prop to `tail`.
+```html
+<FocusLock no-focus-guards="tail">
+    ...
+</FocusLock> 
+```
+
 # How it works
  Everything thing is simple - vue-focus-lock just dont left focus left boundaries of component, and
  do something only if escape attempt was succeeded.
