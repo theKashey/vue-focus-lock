@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
-        <div :tabIndex="disabled ? -1 : 1" :style="hidden"></div>
+        <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
+        <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 1" :style="hidden"></div>
 
         <div @focusout="onBlur" v-bind="groupAttr" data-lock>
             <slot></slot>
         </div>
 
-        <div :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
+        <div v-if="hasTailingGuards" :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
     </div>
 </template>
 
@@ -27,6 +27,8 @@
   let lastActiveTrap = 0;
   let lastActiveFocus = null;
 
+  let focusWasOutsideWindow = false;
+
   const focusOnBody = () => (
     document && document.activeElement === document.body
   );
@@ -37,11 +39,12 @@
     let result = false;
     if (lastActiveTrap) {
       const {observed, onActivation} = lastActiveTrap;
-      if (!isFreeFocus() || !lastActiveFocus) {
+      if (focusWasOutsideWindow || !isFreeFocus() || !lastActiveFocus) {
         if (observed && !focusInside(observed)) {
           onActivation();
           result = moveFocusInside(observed, lastActiveFocus);
         }
+        focusWasOutsideWindow = false;
         lastActiveFocus = document && document.activeElement;
       }
     }
@@ -83,14 +86,20 @@
     deferAction(activateTrap);
   };
 
+  const onWindowBlur = () => {
+    focusWasOutsideWindow = true;
+  };
+
   const attachHandler = () => {
     document.addEventListener('focusin', onTrap, true);
     document.addEventListener('focusout', onBlur);
+    window.addEventListener('blur', onWindowBlur);
   };
 
   const detachHandler = () => {
     document.removeEventListener('focusin', onTrap, true);
     document.removeEventListener('focusout', onBlur);
+    window.removeEventListener('blur', onWindowBlur);
   };
 
 
@@ -104,7 +113,8 @@
         type: Boolean
       },
       noFocusGuards: {
-        type: Boolean
+        type: [Boolean, String],
+        default: false
       },
       group: {
         type: String
@@ -117,11 +127,14 @@
       }
     },
     computed: {
-      guardsEnabled() {
-        return !(this.disabled || this.noFocusGuards);
-      },
       groupAttr() {
         return {[constants.FOCUS_GROUP]: this.group};
+      },
+      hasLeadingGuards() {
+        return this.noFocusGuards !== true;
+      },
+      hasTailingGuards() {
+        return this.hasLeadingGuards && (this.noFocusGuards !== 'tail');
       }
     },
     watch: {
