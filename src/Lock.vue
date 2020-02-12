@@ -156,7 +156,7 @@
 
       this.data.disabled = this.disabled;
       this.data.onActivation = () => {
-        this.originalFocusedElement = this.originalFocusedElement || document.activeElement;
+        this.originalFocusedElement = this.originalFocusedElement || document && document.activeElement;
       };
 
       if (!instances.length) {
