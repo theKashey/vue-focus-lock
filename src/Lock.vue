@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
-        <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 1" :style="hidden"></div>
+        <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 0" :style="hidden" aria-hidden="true"></div>
+        <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 1" :style="hidden" aria-hidden="true"></div>
 
         <div @focusout="onBlur" v-bind="groupAttr" data-lock>
             <slot></slot>
         </div>
 
-        <div v-if="hasTailingGuards" :tabIndex="disabled ? -1 : 0" :style="hidden"></div>
+        <div v-if="hasTailingGuards" :tabIndex="disabled ? -1 : 0" :style="hidden" aria-hidden="true"></div>
     </div>
 </template>
 
