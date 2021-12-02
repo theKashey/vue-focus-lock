@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div ref="rootEl">
         <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 0" :style="hidden" aria-hidden="true"></div>
         <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 1" :style="hidden" aria-hidden="true"></div>
 
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+  import { computed, getCurrentInstance, onMounted, onUnmounted, ref, toRefs, watch } from 'vue-demi';
   import moveFocusInside, {focusInside, focusIsHidden} from 'focus-lock';
   import {constants} from 'focus-lock';
 
@@ -120,66 +121,73 @@
         type: String
       }
     },
-    data() {
-      return {
-        data: {},
-        hidden: ""//    "width: 1px;height: 0px;padding: 0;overflow: hidden;position: fixed;top: 0;left: 0;"
-      }
-    },
-    computed: {
-      groupAttr() {
-        return {[constants.FOCUS_GROUP]: this.group};
-      },
-      hasLeadingGuards() {
-        return this.noFocusGuards !== true;
-      },
-      hasTailingGuards() {
-        return this.hasLeadingGuards && (this.noFocusGuards !== 'tail');
-      }
-    },
-    watch: {
-      disabled() {
-        this.data.disabled = this.disabled;
+    setup(props) {
+      const { returnFocus, disabled, noFocusGuards, group } = toRefs(props);
+
+      const rootEl = ref(null);
+      const data = ref({});
+      const hidden = ref(""); //    "width: 1px;height: 0px;padding: 0;overflow: hidden;position: fixed;top: 0;left: 0;"
+
+      const groupAttr = computed(() => {
+        return {[constants.FOCUS_GROUP]: group.value};
+      });
+
+      const hasLeadingGuards = computed(() => {
+        return noFocusGuards.value !== true;
+      });
+
+      const hasTailingGuards = computed(() => {
+        return hasLeadingGuards.value && (noFocusGuards.value !== 'tail');
+      });
+
+      watch(disabled, () => {
+        data.value.disabled = disabled.value;
         emitChange();
-      }
-    },
+      });
 
-    methods: {
-      onBlur() {
-        deferAction(emitChange);
-      },
-    },
 
-    mounted() {
-      this.data.vue = this;
-      this.data.observed = this.$el.querySelector("[data-lock]");
+      let originalFocusedElement;
 
-      this.data.disabled = this.disabled;
-      this.data.onActivation = () => {
-        this.originalFocusedElement = this.originalFocusedElement || document && document.activeElement;
+      onMounted(() => {
+        data.value.vue = getCurrentInstance();
+        data.value.observed = rootEl.value.querySelector("[data-lock]");
+
+        data.value.disabled = disabled.value;
+        data.value.onActivation = () => {
+          originalFocusedElement = originalFocusedElement || document && document.activeElement;
+        };
+
+        if (!instances.length) {
+          attachHandler();
+        }
+        instances.push(data.value);
+        emitChange();
+      });
+
+      onUnmounted(() => {
+        instances = instances.filter(({vue}) => vue !== getCurrentInstance());
+        if (!instances.length) {
+          detachHandler();
+        }
+        if (
+          returnFocus.value &&
+          originalFocusedElement &&
+          originalFocusedElement.focus
+        ) {
+          originalFocusedElement.focus();
+        }
+        emitChange();
+      });
+
+      return {
+        groupAttr,
+        hasLeadingGuards,
+        hasTailingGuards,
+        hidden,
+        onBlur: () => deferAction(emitChange),
+        rootEl,
       };
-
-      if (!instances.length) {
-        attachHandler();
-      }
-      instances.push(this.data);
-      emitChange();
     },
-
-    destroyed() {
-      instances = instances.filter(({vue}) => vue !== this);
-      if (!instances.length) {
-        detachHandler();
-      }
-      if (
-        this.returnFocus &&
-        this.originalFocusedElement &&
-        this.originalFocusedElement.focus
-      ) {
-        this.originalFocusedElement.focus();
-      }
-      emitChange();
-    }
   }
 
 </script>
