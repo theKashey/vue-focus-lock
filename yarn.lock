@@ -9364,10 +9364,10 @@ vue-style-loader@^2.0.0, vue-style-loader@^2.0.4:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-template-compiler@^2.2.4:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.4.2.tgz#5a45d843f148b098f6c1d1e35ac20c4956d30ad1"
-  integrity sha512-sKa2Bdvh+j6V9eQSyJRxsf8fak0FtQkCZ145aYFDVwZBhHOTt1vKrODLo4RelI1dUczKlDCp5aZ9MD7uJOZwvw==
+vue-template-compiler@^2.6.14:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.6.14.tgz#a2f0e7d985670d42c9c9ee0d044fed7690f4f763"
+  integrity sha512-ODQS1SyMbjKoO1JBJZojSw6FE4qnh9rIpUZn2EUT86FKizx9uH5z6uXiIrm4/Nb/gwxTi/o17ZDEGWAXHvtC7g==
   dependencies:
     de-indent "^1.0.2"
     he "^1.1.0"
@@ -9377,10 +9377,10 @@ vue-template-es2015-compiler@^1.2.2:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.5.3.tgz#22787de4e37ebd9339b74223bc467d1adee30545"
   integrity sha512-j3TBDtjqz7pC9XUzeSeqF5oekqPahxyUHsdG+kZKDH/V/DTexq5inYdLGstnqCUljoLC9LTj3H/5hmyToeSd1A==
 
-vue@^2.0.0:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.4.2.tgz#a9855261f191c978cc0dc1150531b8d08149b58c"
-  integrity sha512-GB5r+CsrCHIB1PoXt4wgBienjF3WGYOIaTK27tDk96sZxpL5RwRrsi9I3ECwFt8x8qAmxT2xk1vsY2Vpcn9nIw==
+vue@^2.5.0:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
+  integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
 
 warning@^3.0.0:
   version "3.0.0"

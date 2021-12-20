@@ -46,16 +46,16 @@
     "eslint-plugin-vue": "^3.12.0",
     "storybook": "^1.0.0",
     "style-loader": "^0.15.0",
-    "vue": "^2.0.0",
+    "vue": "^2.5.0",
     "vue-html-loader": "^1.2.4",
     "vue-loader": "^11.1.4",
     "vue-style-loader": "^2.0.4",
-    "vue-template-compiler": "^2.2.4",
+    "vue-template-compiler": "^2.6.14",
     "webpack": "^2.0.0"
   },
   "peerDependencies": {
     "@vue/composition-api": "^1.0.0-rc.1",
-    "vue": "^2.0.0 || ^3.0.0"
+    "vue": "^2.5.0 || ^3.0.0"
   },
   "peerDependenciesMeta": {
     "@vue/composition-api": {
