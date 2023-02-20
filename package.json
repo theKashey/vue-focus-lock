@@ -32,7 +32,6 @@
     "@storybook/addon-actions": "^3.4.3",
     "@storybook/addon-links": "^3.4.3",
     "@storybook/vue": "^3.4.3",
-    "@vue/composition-api": "^1.4.1",
     "babel-core": "^6.24.0",
     "babel-eslint": "7.2.3",
     "babel-loader": "^6.4.1",
@@ -54,7 +53,7 @@
     "webpack": "^2.0.0"
   },
   "peerDependencies": {
-    "@vue/composition-api": "^1.0.0-rc.1",
+    "@vue/composition-api": "^1.4.1",
     "vue": "^2.5.0 || ^3.0.0"
   },
   "peerDependenciesMeta": {
