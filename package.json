@@ -32,6 +32,7 @@
     "@storybook/addon-actions": "^3.4.3",
     "@storybook/addon-links": "^3.4.3",
     "@storybook/vue": "^3.4.3",
+    "@vue/composition-api": "^1.4.1",
     "babel-core": "^6.24.0",
     "babel-eslint": "7.2.3",
     "babel-loader": "^6.4.1",
