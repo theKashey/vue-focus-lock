@@ -17,6 +17,7 @@
 
   function deferAction(action) {
     const setImmediate = window.setImmediate;
+
     if (typeof setImmediate !== 'undefined') {
       setImmediate(action)
     } else {
@@ -37,17 +38,21 @@
 
   const activateTrap = () => {
     let result = false;
+
     if (lastActiveTrap) {
       const {observed, onActivation} = lastActiveTrap;
+
       if (focusWasOutsideWindow || !isFreeFocus() || !lastActiveFocus) {
         if (observed && !focusInside(observed)) {
           onActivation();
           result = moveFocusInside(observed, lastActiveFocus);
         }
+
         focusWasOutsideWindow = false;
         lastActiveFocus = document && document.activeElement;
       }
     }
+
     return result;
   };
 
@@ -61,7 +66,9 @@
     if (lastActiveTrap !== trap) {
       lastActiveTrap = null;
     }
+
     lastActiveTrap = trap;
+
     if (trap) {
       activateTrap();
       deferAction(activateTrap);
@@ -149,13 +156,15 @@
 
       onMounted(() => {
         const currentInstance = getCurrentInstance();
+
         if (!currentInstance) {
           return;
         }
+
         data.value.instance = currentInstance.proxy;
         data.value.observed = rootEl.value.querySelector("[data-lock]");
-
         data.value.disabled = disabled.value;
+
         data.value.onActivation = () => {
           originalFocusedElement = originalFocusedElement || document && document.activeElement;
         };
@@ -163,19 +172,24 @@
         if (!instances.length) {
           attachHandler();
         }
+
         instances.push(data.value);
         emitChange();
       });
 
       onUnmounted(() => {
         const currentInstance = getCurrentInstance();
+
         if (!currentInstance) {
           return;
         }
+
         instances = instances.filter(({instance}) => instance !== currentInstance);
+
         if (!instances.length) {
           detachHandler();
         }
+
         if (
           returnFocus.value &&
           originalFocusedElement &&
@@ -183,6 +197,7 @@
         ) {
           originalFocusedElement.focus();
         }
+
         emitChange();
       });
 

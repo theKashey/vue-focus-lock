@@ -6,6 +6,7 @@ import GroupStory from './GroupStory.vue';
 import NoFocusGuardsStory from './NoFocusGuardsStory.vue';
 import NoTailingGuardStory from './NoTailingGuardStory.vue';
 
+/* eslint-env node */
 storiesOf('Lock', module)
   .add('simple', () => ({
     components: { LockStory },
