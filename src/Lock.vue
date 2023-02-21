@@ -148,7 +148,11 @@
       let originalFocusedElement;
 
       onMounted(() => {
-        data.value.vue = (getCurrentInstance() || {}).proxy;
+        const currentInstance = getCurrentInstance();
+        if (!currentInstance) {
+          return;
+        }
+        data.value.instance = currentInstance.proxy;
         data.value.observed = rootEl.value.querySelector("[data-lock]");
 
         data.value.disabled = disabled.value;
@@ -164,7 +168,11 @@
       });
 
       onUnmounted(() => {
-        instances = instances.filter(({vue}) => vue !== (getCurrentInstance() || {}).proxy);
+        const currentInstance = getCurrentInstance();
+        if (!currentInstance) {
+          return;
+        }
+        instances = instances.filter(({instance}) => instance !== currentInstance);
         if (!instances.length) {
           detachHandler();
         }
