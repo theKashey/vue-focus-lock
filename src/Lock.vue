@@ -184,7 +184,7 @@
           return;
         }
 
-        instances = instances.filter(({instance}) => instance !== currentInstance);
+        instances = instances.filter(({instance}) => instance !== currentInstance.proxy);
 
         if (!instances.length) {
           detachHandler();
