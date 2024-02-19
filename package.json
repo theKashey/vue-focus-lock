@@ -63,7 +63,7 @@
     }
   },
   "dependencies": {
-    "focus-lock": "^0.11.6",
+    "focus-lock": "^1.3.2",
     "vue-demi": "^0.13.11"
   }
 }
