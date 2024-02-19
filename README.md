@@ -3,9 +3,16 @@ It is a trap! We got your focus and will not let him out!
 
 [![NPM](https://nodei.co/npm/vue-focus-lock.png?downloads=true&stars=true)](https://nodei.co/npm/vue-focus-lock/)
 
+----
+
+- __Vue3 users__ - use v3+ `vue-focus-lock@3`
+- __Vue2 users__ - use v2+ `vue-focus-lock@2`
+
+----
+
 This is a small, but very useful for:
  - Modal dialogs. You can not leave it with "Tab", ie tab-out.
- - Focused tasks. It will aways brings you back.
+ - Focused tasks. It will always brings you back.
  
 You have to use it in _every_ modal dialog, or you `a11y` will be shitty.
  
