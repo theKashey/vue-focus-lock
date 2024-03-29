@@ -3,8 +3,8 @@
   "version": "3.0.0-beta.1",
   "description": "It is a trap! (for a focus)",
   "type": "module",
-  "main": "dist/vue-focus-lock.umd.cjs",
-  "module": "dist/vue-focus-lock.js",
+  "main": "./dist/vue-focus-lock.umd.cjs",
+  "module": "./dist/vue-focus-lock.js",
   "types": "./dist/vue-focus-lock.d.ts",
   "exports": {
     ".": {

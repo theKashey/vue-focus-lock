@@ -25,9 +25,25 @@ import { focusInside, focusIsHidden, moveFocusInside } from 'focus-lock'
 import { constants } from 'focus-lock'
 
 interface VueFocusLockProps {
+  /**
+   * controls focus restoration behavior.
+   * @default false, but is expected to be enabled almost always
+   **/
   returnFocus?: boolean
+  /**
+   * disables the lock
+   * @default false
+   **/
   disabled?: boolean
-  noFocusGuards?: boolean | string
+  /**
+   * removes virtual nodes around the lock
+   * @default false
+   **/
+  noFocusGuards?: boolean | 'tail'
+  /**
+   * specifies a group for the lock
+   * other nodes can be added to the group by adding similar `[constants.FOCUS_GROUP]`('data-focus-lock') attribute
+   **/
   group?: string
 }
 
