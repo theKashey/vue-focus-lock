@@ -1,12 +1,12 @@
 <template>
   <div ref="rootEl">
-    <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 0" aria-hidden="true"></div>
+    <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 0" aria-hidden="true" data-focus-guard></div>
 
     <div @focusout="onBlur" v-bind="groupAttr" data-lock>
       <slot></slot>
     </div>
 
-    <div v-if="hasTailingGuards" :tabIndex="disabled ? -1 : 0" aria-hidden="true"></div>
+    <div v-if="hasTailingGuards" :tabIndex="disabled ? -1 : 0" aria-hidden="true" data-focus-guard></div>
   </div>
 </template>
 
