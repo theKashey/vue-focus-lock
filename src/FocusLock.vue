@@ -1,12 +1,22 @@
 <template>
   <div ref="rootEl">
-    <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 0" aria-hidden="true" data-focus-guard></div>
+    <div
+      v-if="hasLeadingGuards"
+      :tabIndex="disabled ? -1 : 0"
+      :style="hiddenGuard"
+      data-focus-guard
+    ></div>
 
     <div @focusout="onBlur" v-bind="groupAttr" data-lock>
       <slot></slot>
     </div>
 
-    <div v-if="hasTailingGuards" :tabIndex="disabled ? -1 : 0" aria-hidden="true" data-focus-guard></div>
+    <div
+      v-if="hasTailingGuards"
+      :tabIndex="disabled ? -1 : 0"
+      :style="hiddenGuard"
+      data-focus-guard
+    ></div>
   </div>
 </template>
 
@@ -23,6 +33,16 @@ import {
 } from 'vue'
 import { focusInside, focusIsHidden, moveFocusInside } from 'focus-lock'
 import { constants } from 'focus-lock'
+
+const hiddenGuard: Record<string, string> = {
+  width: '1px',
+  height: '0px',
+  padding: '0',
+  overflow: 'hidden',
+  position: 'fixed',
+  top: '1px',
+  left: '1px'
+}
 
 interface VueFocusLockProps {
   /**
