@@ -1,12 +1,22 @@
 <template>
   <div ref="rootEl">
-    <div v-if="hasLeadingGuards" :tabIndex="disabled ? -1 : 0" aria-hidden="true" data-focus-guard></div>
+    <div
+      v-if="hasLeadingGuards"
+      :tabIndex="disabled ? -1 : 0"
+      aria-hidden="true"
+      data-focus-guard
+    ></div>
 
     <div @focusout="onBlur" v-bind="groupAttr" data-lock>
       <slot></slot>
     </div>
 
-    <div v-if="hasTailingGuards" :tabIndex="disabled ? -1 : 0" aria-hidden="true" data-focus-guard></div>
+    <div
+      v-if="hasTailingGuards"
+      :tabIndex="disabled ? -1 : 0"
+      aria-hidden="true"
+      data-focus-guard
+    ></div>
   </div>
 </template>
 
@@ -29,7 +39,7 @@ interface VueFocusLockProps {
    * controls focus restoration behavior.
    * @default false, but is expected to be enabled almost always
    **/
-  returnFocus?: boolean
+  returnFocus?: boolean | FocusOptions
   /**
    * disables the lock
    * @default false
@@ -45,12 +55,17 @@ interface VueFocusLockProps {
    * other nodes can be added to the group by adding similar `[constants.FOCUS_GROUP]`('data-focus-lock') attribute
    **/
   group?: string
+  /**
+   * options to pass to focus operations (e.g. { preventScroll: true })
+   **/
+  focusOptions?: FocusOptions
 }
 
 interface LockState {
   instance?: ComponentInternalInstance['proxy']
   observed?: HTMLElement | null
   disabled: boolean
+  focusOptions?: FocusOptions
   onActivation: () => void
 }
 
@@ -59,7 +74,7 @@ let originalFocusedElement: Element | HTMLElement
 
 const props = defineProps<VueFocusLockProps>()
 
-const { returnFocus, disabled, noFocusGuards, group } = toRefs(props)
+const { returnFocus, disabled, noFocusGuards, group, focusOptions } = toRefs(props)
 
 const rootEl = ref<HTMLDivElement | null>(null)
 const data = ref<LockState>({ disabled: true, onActivation: () => {} })
@@ -81,6 +96,13 @@ watch(disabled, () => {
   emitChange()
 })
 
+watch(
+  () => focusOptions?.value,
+  () => {
+    data.value.focusOptions = focusOptions?.value
+  }
+)
+
 onMounted(() => {
   const currentInstance = getCurrentInstance()
 
@@ -92,6 +114,7 @@ onMounted(() => {
     instance: currentInstance.proxy,
     observed: rootEl.value!.querySelector<HTMLElement>('[data-lock]'),
     disabled: disabled.value,
+    focusOptions: focusOptions?.value,
     onActivation: () => {
       originalFocusedElement = originalFocusedElement || (document && document.activeElement)
     }
@@ -123,7 +146,14 @@ onUnmounted(() => {
     originalFocusedElement &&
     (originalFocusedElement as HTMLElement).focus
   ) {
-    ;(originalFocusedElement as HTMLElement).focus()
+    const returnFocusOptions =
+      typeof returnFocus.value === 'object' ? returnFocus.value : focusOptions?.value
+    ;(originalFocusedElement as HTMLElement).focus(returnFocusOptions)
+  }
+
+  if (!instances.length) {
+    originalFocusedElement = undefined as any
+    lastActiveFocus = null
   }
 
   emitChange()
@@ -144,12 +174,12 @@ const isFreeFocus = () => focusOnBody() || focusIsHidden()
 
 const activateTrap = () => {
   if (lastActiveTrap) {
-    const { observed, onActivation } = lastActiveTrap
+    const { observed, onActivation, focusOptions } = lastActiveTrap
 
     if (focusWasOutsideWindow || !isFreeFocus() || !lastActiveFocus) {
       if (observed && !focusInside(observed)) {
         onActivation()
-        moveFocusInside(observed, lastActiveFocus as Element)
+        moveFocusInside(observed, lastActiveFocus as Element, { focusOptions })
       }
 
       focusWasOutsideWindow = false

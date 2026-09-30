@@ -52,6 +52,8 @@ Only `last`, or `deepest` one will work. No fighting.
 # API
  FocusLock has few props to tune behavior, all props are optional:
   - `disabled`, to disable(enable) behavior without altering the tree.
+  - `returnFocus`, to return focus to the previously focused element upon unmounting. Can be a boolean or a `FocusOptions` object (e.g. `{ preventScroll: true }`).
+  - `focusOptions`, options to pass to focus operations (e.g. `{ preventScroll: true }`).
   - `group=''`, named focus group for focus scattering aka [combined lock targets](https://github.com/theKashey/vue-focus-lock/issues/2).
   - `noFocusGuards=false`, disable focus guards - virtual inputs which secure tab index.
 

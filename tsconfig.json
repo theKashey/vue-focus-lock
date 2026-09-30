@@ -10,5 +10,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "exclude": ["./dist", "./node_modules", "./eslintrc.cjs"]
+  "exclude": ["./dist", "./node_modules", "./eslintrc.cjs", "./vitest.config.ts"]
 }
