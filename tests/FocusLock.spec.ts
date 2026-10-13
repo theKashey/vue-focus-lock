@@ -189,11 +189,7 @@ describe('FocusLock Component', () => {
   })
 
   it('forwards focusOptions to focus calls when trapping focus', async () => {
-    const originalFocus = HTMLElement.prototype.focus
-    const focusSpy = vi.fn(function (this: HTMLElement, options?: FocusOptions) {
-      originalFocus.call(this, options)
-    })
-    HTMLElement.prototype.focus = focusSpy
+    const focusSpy = vi.spyOn(HTMLElement.prototype, 'focus')
 
     const app = createApp({
       render() {
@@ -234,11 +230,7 @@ describe('FocusLock Component', () => {
   })
 
   it('passes focusOptions to returnFocus on unmount', async () => {
-    const originalFocus = HTMLElement.prototype.focus
-    const focusSpy = vi.fn(function (this: HTMLElement, options?: FocusOptions) {
-      originalFocus.call(this, options)
-    })
-    HTMLElement.prototype.focus = focusSpy
+    const focusSpy = vi.spyOn(HTMLElement.prototype, 'focus')
 
     const outsideBtn = document.createElement('button')
     outsideBtn.id = 'outside-btn'
@@ -270,11 +262,7 @@ describe('FocusLock Component', () => {
   })
 
   it('supports passing FocusOptions object directly to returnFocus', async () => {
-    const originalFocus = HTMLElement.prototype.focus
-    const focusSpy = vi.fn(function (this: HTMLElement, options?: FocusOptions) {
-      originalFocus.call(this, options)
-    })
-    HTMLElement.prototype.focus = focusSpy
+    const focusSpy = vi.spyOn(HTMLElement.prototype, 'focus')
 
     const outsideBtn = document.createElement('button')
     outsideBtn.id = 'outside-btn-direct'
@@ -306,11 +294,7 @@ describe('FocusLock Component', () => {
   })
 
   it('handles reactive update of focusOptions prop', async () => {
-    const originalFocus = HTMLElement.prototype.focus
-    const focusSpy = vi.fn(function (this: HTMLElement, options?: FocusOptions) {
-      originalFocus.call(this, options)
-    })
-    HTMLElement.prototype.focus = focusSpy
+    const focusSpy = vi.spyOn(HTMLElement.prototype, 'focus')
 
     const currentFocusOptions = ref<FocusOptions>({ preventScroll: false })
 
